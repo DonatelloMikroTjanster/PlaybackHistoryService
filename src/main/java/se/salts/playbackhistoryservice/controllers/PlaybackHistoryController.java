@@ -38,19 +38,6 @@ public class PlaybackHistoryController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createPlaybackHistory(@RequestBody PlaybackHistory playbackHistory) {
-        try {
-            PlaybackHistory createdPlaybackHistory = playbackHistoryService.createPlaybackHistory(playbackHistory);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdPlaybackHistory);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Ogiltigt indata: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Fel vid skapande av playback history: " + e.getMessage());
-        }
-    }
-
     @GetMapping("/user/{userId}/most-played")
     public ResponseEntity<?> getMostPlayedMediaForUser(@PathVariable Long userId) {
         try {
