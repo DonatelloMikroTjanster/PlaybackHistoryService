@@ -1,5 +1,7 @@
 package se.salts.playbackhistoryservice.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 @Service
 public class PlaybackHistoryService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PlaybackHistoryService.class);
+
     private final PlaybackHistoryRepository playbackHistoryRepository;
     private final UserRepository userRepository;
     private final MediaRepository mediaRepository;
@@ -33,46 +37,24 @@ public class PlaybackHistoryService {
 
     @Transactional(readOnly = true)
     public List<Media> getMostPlayedMediaForUser(Long userId) {
-        try {
-            Pageable pageable = PageRequest.of(0, 10);
-            List<PlaybackHistory> histories = playbackHistoryRepository.findMostPlayedByUserId(userId, pageable);
-            return histories.stream()
-                    .map(PlaybackHistory::getMedia)
-                    .filter(Objects::nonNull)
-                    .distinct()
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new RuntimeException("Fel vid hämtning av mest spelade media", e);
-        }
+        logger.debug("Fetching most played media for user with ID: {}", userId);
+        Pageable pageable = PageRequest.of(0, 10);
+        List<PlaybackHistory> histories = playbackHistoryRepository.findMostPlayedByUserId(userId, pageable);
+        List<Media> mediaList = histories.stream()
+                .map(PlaybackHistory::getMedia)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
+        logger.info("Found {} media entries for user with ID: {}", mediaList.size(), userId);
+        return mediaList;
     }
 
     @Transactional(readOnly = true)
     public List<PlaybackHistory> getPlaybackHistoryForUser(Long userId) {
-        try {
-            return playbackHistoryRepository.findByUserId(userId);
-        } catch (Exception e) {
-            throw new RuntimeException("Fel vid hämtning av playback history", e);
-        }
+        logger.debug("Fetching playback history for user with ID: {}", userId);
+        List<PlaybackHistory> playbackHistories = playbackHistoryRepository.findByUserId(userId);
+        logger.info("Found {} playback history entries for user with ID: {}", playbackHistories.size(), userId);
+        return playbackHistories;
     }
 
-    @Transactional
-    public PlaybackHistory createPlaybackHistory(PlaybackHistory playbackHistory) {
-        try {
-            User user = playbackHistory.getUser();
-            Media media = playbackHistory.getMedia();
-
-            if (user == null || userRepository.findById(user.getId()).isEmpty()) {
-                throw new IllegalArgumentException("User not found");
-            }
-            if (media == null || mediaRepository.findById(media.getId()).isEmpty()) {
-                throw new IllegalArgumentException("Media not found");
-            }
-
-            return playbackHistoryRepository.save(playbackHistory);
-        } catch (IllegalArgumentException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Fel vid skapande av playback history", e);
-        }
-    }
 }
