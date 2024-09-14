@@ -1,14 +1,18 @@
 package se.salts.playbackhistoryservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false, length = 100)
@@ -20,10 +24,19 @@ public class User {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "user")
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<PlaybackHistory> playbackHistories;
 
-    // Getters and setters
+    public User() {}
+
+    public User(Long id, String username, String email, LocalDateTime createdAt) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;

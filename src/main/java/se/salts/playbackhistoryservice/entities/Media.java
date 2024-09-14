@@ -2,11 +2,15 @@ package se.salts.playbackhistoryservice.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "media")
 public class Media {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "media_id")
     private Long id;
 
     @Column(name = "title", nullable = false)
@@ -16,12 +20,21 @@ public class Media {
     private String mediaType;
 
     @Column(name = "duration")
-    private Integer duration;
+    private String duration;
 
     @Column(name = "release_date")
-    private java.sql.Date releaseDate;
+    private LocalDate releaseDate = LocalDate.now();
 
-    // Getter och Setter metoder
+    public Media() {}
+
+    public Media(Long id, String title, String mediaType, String duration, LocalDate releaseDate) {
+        this.id = id;
+        this.title = title;
+        this.mediaType = mediaType;
+        this.duration = duration;
+        this.releaseDate = releaseDate;
+    }
+
     public Long getId() {
         return id;
     }
@@ -46,19 +59,19 @@ public class Media {
         this.mediaType = mediaType;
     }
 
-    public Integer getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    public java.sql.Date getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(java.sql.Date releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 }
