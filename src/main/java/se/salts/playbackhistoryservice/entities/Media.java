@@ -23,7 +23,7 @@ public class Media {
     private String duration;
 
     @Column(name = "release_date")
-    private LocalDate releaseDate = LocalDate.now();
+    private LocalDate releaseDate;
 
     public Media() {}
 
