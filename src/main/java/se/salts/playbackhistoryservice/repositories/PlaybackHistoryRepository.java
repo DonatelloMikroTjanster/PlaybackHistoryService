@@ -12,6 +12,5 @@ import java.util.List;
 public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory, Long> {
     List<PlaybackHistory> findByUserId(Long userId);
 
-    @Query("SELECT ph FROM PlaybackHistory ph WHERE ph.user.id = :userId ORDER BY ph.progress DESC")
     List<PlaybackHistory> findMostPlayedByUserId(Long userId, Pageable pageable);
 }
