@@ -1,8 +1,9 @@
 package se.salts.playbackhistoryservice.entities;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+
+
 
 @Entity
 @Table(name = "playback_history")
