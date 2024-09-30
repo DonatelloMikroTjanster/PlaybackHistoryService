@@ -10,30 +10,24 @@ public class Media {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "media_id")
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 100)
     private String title;
 
-    @Column(name = "media_type", nullable = false)
-    private String mediaType;
+    @Column(name = "media_type", nullable = false, length = 100)
+    private String mediaCategory;
 
-    @Column(name = "duration")
+    @Column(name = "genre", nullable = false, length = 100)
+    private String genre;
+
+    @Column(name = "duration", nullable = false, length = 100)
     private String duration;
 
-    @Column(name = "release_date")
+    @Column(name = "release_date", nullable = false, length = 100)
     private LocalDate releaseDate;
 
     public Media() {}
-
-    public Media(Long id, String title, String mediaType, String duration, LocalDate releaseDate) {
-        this.id = id;
-        this.title = title;
-        this.mediaType = mediaType;
-        this.duration = duration;
-        this.releaseDate = releaseDate;
-    }
 
     public Long getId() {
         return id;
@@ -51,12 +45,12 @@ public class Media {
         this.title = title;
     }
 
-    public String getMediaType() {
-        return mediaType;
+    public String getMediaCategory() {
+        return mediaCategory;
     }
 
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
+    public void setMediaCategory(String mediaCategory) {
+        this.mediaCategory = mediaCategory;
     }
 
     public String getDuration() {
@@ -65,6 +59,14 @@ public class Media {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public LocalDate getReleaseDate() {
