@@ -1,5 +1,6 @@
 package se.salts.playbackhistoryservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -15,10 +16,12 @@ public class PlaybackHistory {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "media_id", nullable = false)
+    @JsonIgnore
     private Media media;
 
     @Column(name = "played_at", nullable = false)
