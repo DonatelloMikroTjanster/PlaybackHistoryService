@@ -1,8 +1,11 @@
 package se.salts.playbackhistoryservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "media")
@@ -12,20 +15,36 @@ public class Media {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title", nullable = false, length = 100)
+    @Column(name = "title", length = 100)
     private String title;
 
-    @Column(name = "media_type", nullable = false, length = 100)
-    private String mediaCategory;
+    @Column(name = "media_type", length = 100)
+    private String mediaType;
 
-    @Column(name = "genre", nullable = false, length = 100)
-    private String genre;
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 
-    @Column(name = "duration", nullable = false, length = 100)
+    @Column(name = "release_date", length = 100)
+    private LocalDate releaseDate;
+
+    @Column(name = "url", length = 100)
+    private String url;
+
+    @Column(name = "duration", length = 100)
     private String duration;
 
-    @Column(name = "release_date", nullable = false, length = 100)
-    private LocalDate releaseDate;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "user_id", nullable = true)
+    @JsonBackReference
+    @JsonIgnore
+    private User user;
+
+    @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)
+    private List<PlaybackHistory> playbackHistories;
+
+
 
     public Media() {}
 
@@ -45,12 +64,36 @@ public class Media {
         this.title = title;
     }
 
-    public String getMediaCategory() {
-        return mediaCategory;
+    public String getMediaType() {
+        return mediaType;
     }
 
-    public void setMediaCategory(String mediaCategory) {
-        this.mediaCategory = mediaCategory;
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getDuration() {
@@ -61,19 +104,19 @@ public class Media {
         this.duration = duration;
     }
 
-    public String getGenre() {
-        return genre;
+    public User getUser() {
+        return user;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public LocalDate getReleaseDate() {
-        return releaseDate;
+    public List<PlaybackHistory> getPlaybackHistories() {
+        return playbackHistories;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setPlaybackHistories(List<PlaybackHistory> playbackHistories) {
+        this.playbackHistories = playbackHistories;
     }
 }

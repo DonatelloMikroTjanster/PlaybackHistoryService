@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.salts.playbackhistoryservice.entities.Media;
 import se.salts.playbackhistoryservice.entities.PlaybackHistory;
-import se.salts.playbackhistoryservice.entities.User;
 import se.salts.playbackhistoryservice.repositories.MediaRepository;
 import se.salts.playbackhistoryservice.repositories.PlaybackHistoryRepository;
 import se.salts.playbackhistoryservice.repositories.UserRepository;
