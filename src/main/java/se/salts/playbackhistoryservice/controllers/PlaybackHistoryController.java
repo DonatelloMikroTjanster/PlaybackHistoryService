@@ -55,4 +55,5 @@ public class PlaybackHistoryController {
                     .body("Fel vid hämtning av mest spelade media: " + e.getMessage());
         }
     }
+
 }
