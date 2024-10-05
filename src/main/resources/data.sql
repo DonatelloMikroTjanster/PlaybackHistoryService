@@ -1,6 +1,6 @@
 
 
-INSERT IGNORE INTO user (id, username, email, created_at)
+INSERT IGNORE INTO user (id, user_name, email, created_at)
 VALUES
     (1, 'kalle_anka', 'kalle@example.com', '2023-01-01 10:00:00'),
     (2, 'lisa_svensson', 'lisa@example.com', '2023-01-02 11:00:00'),
