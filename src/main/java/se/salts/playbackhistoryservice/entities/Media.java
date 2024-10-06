@@ -1,39 +1,54 @@
 package se.salts.playbackhistoryservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "media")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Media {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "media_id")
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", length = 100)
     private String title;
 
-    @Column(name = "media_type", nullable = false)
+    @Column(name = "media_type", length = 100)
     private String mediaType;
 
-    @Column(name = "duration")
-    private String duration;
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 
-    @Column(name = "release_date")
+    @Column(name = "release_date", length = 100)
     private LocalDate releaseDate;
 
-    public Media() {}
+    @Column(name = "url", length = 100)
+    private String url;
 
-    public Media(Long id, String title, String mediaType, String duration, LocalDate releaseDate) {
-        this.id = id;
-        this.title = title;
-        this.mediaType = mediaType;
-        this.duration = duration;
-        this.releaseDate = releaseDate;
-    }
+    @Column(name = "duration", length = 100)
+    private String duration;
+
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "user_id", nullable = true)
+    @JsonBackReference
+    @JsonIgnore
+    private User user;
+
+    @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)
+    private List<PlaybackHistory> playbackHistories;
+
+
+
+    public Media() {}
 
     public Long getId() {
         return id;
@@ -59,12 +74,12 @@ public class Media {
         this.mediaType = mediaType;
     }
 
-    public String getDuration() {
-        return duration;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     public LocalDate getReleaseDate() {
@@ -73,5 +88,37 @@ public class Media {
 
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<PlaybackHistory> getPlaybackHistories() {
+        return playbackHistories;
+    }
+
+    public void setPlaybackHistories(List<PlaybackHistory> playbackHistories) {
+        this.playbackHistories = playbackHistories;
     }
 }

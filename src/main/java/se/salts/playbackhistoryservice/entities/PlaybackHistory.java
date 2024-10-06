@@ -1,8 +1,8 @@
 package se.salts.playbackhistoryservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
 
 
 @Entity
@@ -11,32 +11,23 @@ public class PlaybackHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "playback_history_id")
+    @Column (name = "id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "media_id", nullable = false)
+    @JsonIgnore
     private Media media;
 
     @Column(name = "played_at", nullable = false)
     private LocalDateTime playedAt;
 
-    @Column(name = "progress")
-    private Integer progress;
-
     public PlaybackHistory() {}
-
-    public PlaybackHistory(Long id, User user, Media media, LocalDateTime playedAt, Integer progress) {
-        this.id = id;
-        this.user = user;
-        this.media = media;
-        this.playedAt = playedAt;
-        this.progress = progress;
-    }
 
     public Long getId() {
         return id;
@@ -68,13 +59,5 @@ public class PlaybackHistory {
 
     public void setPlayedAt(LocalDateTime playedAt) {
         this.playedAt = playedAt;
-    }
-
-    public Integer getProgress() {
-        return progress;
-    }
-
-    public void setProgress(Integer progress) {
-        this.progress = progress;
     }
 }

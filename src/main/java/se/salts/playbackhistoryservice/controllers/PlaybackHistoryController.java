@@ -3,10 +3,7 @@ package se.salts.playbackhistoryservice.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.salts.playbackhistoryservice.entities.Media;
 import se.salts.playbackhistoryservice.entities.PlaybackHistory;
 import se.salts.playbackhistoryservice.services.PlaybackHistoryService;
@@ -55,4 +52,5 @@ public class PlaybackHistoryController {
                     .body("Fel vid hämtning av mest spelade media: " + e.getMessage());
         }
     }
+
 }

@@ -7,36 +7,31 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "user_name", nullable = false, length = 100)
     private String username;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, length = 100)
     private LocalDateTime createdAt;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Media> media;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<PlaybackHistory> playbackHistories;
 
     public User() {}
-
-    public User(Long id, String username, String email, LocalDateTime createdAt) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.createdAt = createdAt;
-    }
 
     public Long getId() {
         return id;
@@ -70,18 +65,19 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public Set<Media> getMedia() {
+        return media;
+    }
+
+    public void setMedia(Set<Media> media) {
+        this.media = media;
+    }
+
     public Set<PlaybackHistory> getPlaybackHistories() {
         return playbackHistories;
     }
 
     public void setPlaybackHistories(Set<PlaybackHistory> playbackHistories) {
         this.playbackHistories = playbackHistories;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
     }
 }
